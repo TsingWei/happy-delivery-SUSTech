@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    欢乐送外送平台
+{% endblock %}
+
+{% block navbar %}
+    {{ super() }}
+{% endblock %}
+
+{% block content %}
+    <div class="container" style="background-image: url(/static/img/lightbg.jpg)">
+        <div class="jumbotron" style="background: none">
+            <div class="container">
+
+                <h2 class="display-4"> LOGO</h2>
+                <!-- Card -->
+                <div class="card col-md-3">
+
+                    <!-- Card image -->
+                    <img class="card-img-top" src="https://mdbootstrap.com/img/Photos/Others/images/43.jpg"
+                         alt="Card image cap">
+
+                    <!-- Card content -->
+                    <div class="card-body">
+
+                        <!-- Title -->
+                        <h4 class="card-title"><a>黄焖鸡米饭</a></h4>
+                        <!-- Text -->
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
+                            the card's content.</p>
+                        <!-- Button -->
+                        <a href="#" class="btn btn-primary">选购</a>
+
+                    </div>
+
+                </div>
+                <!-- Card -->
+            </div>
+        </div>
+    </div>
+{% endblock %}
