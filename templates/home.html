@@ -14,28 +14,31 @@
             <div class="container">
 
                 <h2 class="display-4"> LOGO</h2>
-                <!-- Card -->
-                <div class="card col-md-3">
+                <div class="row">
+                    {% for dish in dishes %}
+                    <!-- Card -->
+                    <div class="card col-md-3">
 
-                    <!-- Card image -->
-                    <img class="card-img-top" src="https://mdbootstrap.com/img/Photos/Others/images/43.jpg"
-                         alt="Card image cap">
+                        <!-- Card image -->
+                        <img class="card-img-top" src="{{ dish.image_url }}"
+                             alt="Card image cap">
 
-                    <!-- Card content -->
-                    <div class="card-body">
+                        <!-- Card content -->
+                        <div class="card-body">
 
-                        <!-- Title -->
-                        <h4 class="card-title"><a>黄焖鸡米饭</a></h4>
-                        <!-- Text -->
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
-                            the card's content.</p>
-                        <!-- Button -->
-                        <a href="#" class="btn btn-primary">选购</a>
+                            <!-- Title -->
+                            <h4 class="card-title"><a>{{ dish.name }}</a></h4>
+                            <!-- Text -->
+                            <p class="card-text">￥{{ dish.price }}</p>
+                            <!-- Button -->
+                            <a href="#" class="btn btn-primary">选购</a>
+
+                        </div>
 
                     </div>
-
+                    <!-- Card -->
+                    {% endfor %}
                 </div>
-                <!-- Card -->
             </div>
         </div>
     </div>
