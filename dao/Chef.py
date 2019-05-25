@@ -203,7 +203,7 @@ class Chef(Base):
         if isinstance(chefid, int):
             try:
                 session = DBSession()
-                sql = 'select CHEF_NAME,DISH_NAME,avg(COMMENT_RANK) from(select * from dish_comment join chef join dish on ' \
+                sql = 'select CHEF_NAME,DISH_NAME,b.DISH_ID,avg(COMMENT_RANK) from(select * from dish_comment join chef join dish on ' \
                       'COMMENT_CHEFID=CHEF_ID and COMMENT_DISHID=DISH_ID  where COMMENT_CHEFID=\'%s\' order by DISH_NAME)a ' \
                       'join (select DISH_ID from chef_to_dish where CHEF_ID=\'%s\')b on a.DISH_ID=b.DISH_ID group by DISH_NAME ;' % (
                       chefid, chefid)
@@ -213,7 +213,8 @@ class Chef(Base):
                     a = {
                         'chef_name': r[0],
                         'dish_name': r[1],
-                        'rank': r[2]
+                        'dish_id': r[2],
+                        'rank': r[3]
                     }
                     k.append(a)
 

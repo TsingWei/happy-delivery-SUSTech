@@ -1,5 +1,5 @@
 from flask_login import UserMixin
-from dao.User import User as DaoUser
+from dao.Chef import Chef
 
 # class User:
 #     def __init__(self, sid, name, address):
@@ -37,5 +37,5 @@ users = [
 
 # 通过用户名，获取用户记录，如果不存在，则返回None
 def query_user(user_id):
-    return DaoUser.find_user(user_id=int(user_id))
+    return Chef.find_chef(chef_id=int(user_id))
 

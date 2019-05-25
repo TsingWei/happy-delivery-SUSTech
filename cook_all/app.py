@@ -2,11 +2,9 @@ from flask import Flask, render_template, redirect, url_for, flash, request
 from flask_bootstrap import Bootstrap
 from flask_bootstrap import WebCDN
 from flask_login import LoginManager, login_user, login_required,logout_user,current_user
-
-import bean.dish as dish
-from bean.user import User
-from bean.user import query_user
-from adapter import form as myForm
+from cook_all.adapter import dishadapter
+from cook_all.bean.user import User
+from cook_all.bean.user import query_user
 import cook_all.bean.comment as comment
 
 login_manager = LoginManager()
@@ -31,11 +29,11 @@ def test():
 @app.route('/', methods=['GET', 'POST'])
 @login_required
 def hello_world():  # 登陆后首页,点餐页面
-    dishes = dish.dishes
     # form = myForm.OrderForm()
-    dishID = request.form.get('dishname')
-    print(dishID)
-    current_user.curr_order[dishID] = 1
+    chefid = request.form.get('dishname')
+    current_user.curr_order[chefid] = 1
+    print(chefid)
+    dishes = dishadapter.getalldish(chefid)
     for eachKey in current_user.curr_order.keys():
         print(eachKey)
     return render_template('home.html', dishes=dishes)
