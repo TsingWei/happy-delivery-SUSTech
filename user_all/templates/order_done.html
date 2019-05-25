@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    确认你的订单
+{% endblock %}
+
+{% block navbar %}
+    {{ super() }}
+{% endblock %}
+
+{% block content %}
+    <div class="container" style="background-image: url(/user_all/static/img/lightbg.jpg)">
+        <div class="jumbotron" style="background: none">
+            <div class="container">
+                <!-- Default unchecked -->
+                <p class="display-4">选择地址</p>
+                <div class="row">
+
+                    {% for address in addresses %}
+                        <!-- Card -->
+                        <div class="card col-md-3">
+
+
+                            <!-- Card content -->
+                            <div class="card-body">
+
+                                <!-- Title -->
+                                <h4 class="card-title"><a>{{ address['address_phone'] }}</a></h4>
+                                <!-- Text -->
+                                <p class="card-text">{{ address['address_name'] }}</p>
+                                <!-- Button -->
+                                <form method="POST" action="{{ url_for('done') }}" name="form_{{ address['address_id'] }}">
+                                    <input type="hidden" class="form-control mb-4" name="address_id"
+                                           value={{ address['address_id'] }}>
+
+                                    <button name="confirm" type="submit" class="btn btn-primary">确认</button>
+                                </form>
+                            </div>
+
+                        </div>
+                        <!-- Card -->
+                    {% endfor %}
+
+                </div>
+
+
+            </div>
+        </div>
+        <div class="card" id="orders">
+            我的订单
+            <ul class="list-group">
+
+                {% for dish in current_user.curr_order.items() %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ dish[0] }}
+                        <span class="badge badge-primary badge-pill">{{ dish[1] }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+
+
+
+        </div>
+        <button onclick="topFunction()" class="btn btn-amber " id="myBtn" style=" border-radius: 0" title="Go to top"><i
+                style="font-size: 2em" class="fas fa-angle-up"></i></button>
+    </div>
+{% endblock %}

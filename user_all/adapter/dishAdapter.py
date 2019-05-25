@@ -1,5 +1,5 @@
 from user_all.bean.dish import Dish
-from user_all.dao import Hall
+from user_all.dao.Hall import Hall
 
 def getAlldish(hallID):
     dishes = []

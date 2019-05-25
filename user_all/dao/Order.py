@@ -3,10 +3,10 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 import time
 from sqlalchemy.sql import and_
-from user_all.dao import Dish
-from user_all.dao import Hall
-from user_all.dao import ChefToDish
-from user_all.dao import OrderToRemain
+from user_all.dao.Dish import Dish
+from user_all.dao.Hall import Hall
+from user_all.dao.ChefToDish import ChefToDish
+from user_all.dao.OrderToRemain import OrderToRemain
 
 Base = declarative_base()
 engine = create_engine('mysql+mysqlconnector://'

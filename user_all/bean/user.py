@@ -1,5 +1,5 @@
 from flask_login import UserMixin
-from user_all.dao import User as DaoUser
+from user_all.dao.User import User as DaoUser
 
 # class User:
 #     def __init__(self, sid, name, address):

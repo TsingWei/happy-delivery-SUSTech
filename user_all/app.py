@@ -7,6 +7,8 @@ from flask_login import LoginManager, login_user, login_required,logout_user,cur
 from user_all.bean.user import User
 from user_all.bean.user import query_user
 from user_all.adapter import dishAdapter
+from user_all.dao.Address import Address
+from user_all.dao.Order import Order
 
 login_manager = LoginManager()
 app = Flask(__name__)
@@ -21,30 +23,37 @@ app.extensions['bootstrap']['cdns']['jquery'] = WebCDN(
 
 app.secret_key = '11111111'  # CSRF密钥
 curr_order = {}
+curr_order_id = {}
+hallID = None
 
 # 测试页面
 @app.route('/test')
 def test():
-    return render_template('base.html')
+    return render_template('user_all/templates/base.html')
 
 @app.route('/', methods=['GET', 'POST'])
 @login_required
 def hello_world():  # 登陆后首页,点餐页面
-    global curr_order
+    global curr_order,hallID,curr_order_id
 
     # form = myForm.OrderForm()
-    dishID = request.form.get('dishname')
+    dishname = request.form.get('dishname')
+    dishID = request.form.get('dishid')
     hallID = request.args.get('hall')
     if hallID is None:
         hallID = 1
-
+    if dishID is not None:
+        dishID = int(dishID)
     print('hall ID is ', hallID)
     dishes = dishAdapter.getAlldish(hallID)
-    print(dishID)
-    if dishID in curr_order:
-        curr_order[dishID] += 1
-    else:
-        curr_order[dishID] = 1
+    print(dishname)
+
+    if dishname in curr_order:
+        curr_order[dishname] += 1
+        curr_order_id[dishID] += 1
+    elif dishname is not None:
+        curr_order[dishname] = 1
+        curr_order_id[dishID] = 1
     current_user.curr_order = curr_order
     return render_template('home.html', dishes=dishes)
 
@@ -53,14 +62,37 @@ def hello_world():  # 登陆后首页,点餐页面
 @login_required
 def logout():
     # logout_user()
+    curr_order.clear()
+    curr_order_id.clear()
     logout_user()
     return render_template('login.html')
 
 @app.route('/order_done', methods=['GET', 'POST'])
 @login_required
 def order_done():
-    curr_order.clear()
-    return('下单成功!')
+    id = current_user.user_id
+    addresses = Address.find_address(uid=int(id))
+    print(addresses)
+    current_user.curr_order = curr_order
+    # curr_order.clear()
+    return render_template('order_done.html', addresses=addresses)
+
+
+
+@app.route('/done', methods=['GET', 'POST'])
+@login_required
+def done():
+    global hallID
+    if request.method == 'POST':
+        address_id = request.form.get('address_id')
+        print('jjjjjjjj',curr_order_id)
+        state = 'NC'
+        hall_id = int(hallID)
+        Order.new_order(int(address_id),state,curr_order_id,hall_id)
+        curr_order.clear()
+        curr_order_id.clear()
+        # curr_order.clear()
+        return redirect(url_for('hello_world'))
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():  # 登录页面
