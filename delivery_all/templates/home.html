@@ -51,17 +51,17 @@
 
             </div>
         </div>
-    <div class="card" id = "orders">
-                    我的接单
-                    <ul class="list-group">
-
-                        {% for order in get_order %}
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                {{ order }}
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </div>
+{#    <div class="card" id = "orders">#}
+{#                    我的接单#}
+{#                    <ul class="list-group">#}
+{##}
+{#                        {% for order in get_order %}#}
+{#                            <li class="list-group-item d-flex justify-content-between align-items-center">#}
+{#                                {{ order }}#}
+{#                            </li>#}
+{#                        {% endfor %}#}
+{#                    </ul>#}
+{#                </div>#}
     <button onclick="topFunction()" class="btn btn-amber " id="myBtn" style=" border-radius: 0" title="Go to top"><i style="font-size: 2em" class="fas fa-angle-up"></i></button>
     </div>
 {% endblock %}

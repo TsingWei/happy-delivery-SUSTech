@@ -80,7 +80,7 @@ def load_user(user_id):
     res = query_user(int(user_id))
     if res is not None:
         curr_user = User(res[0])
-        curr_user.id = user_id
+        curr_user.delivery_id = user_id
         return curr_user
     else:
         return None
