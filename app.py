@@ -33,7 +33,7 @@ def hello_world():  # 登陆后首页,点餐页面
     global curr_order
     dishes = dish.dishes
     # form = myForm.OrderForm()
-    dishID = request.args.get('dishname')
+    dishID = request.form.get('dishname')
     print(dishID)
     if dishID in curr_order:
         curr_order[dishID] += 1
