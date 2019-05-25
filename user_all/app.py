@@ -42,6 +42,8 @@ def hello_world():  # 登陆后首页,点餐页面
     hallID = request.args.get('hall')
     if hallID is None:
         hallID = 1
+    else:
+        hallID = int(hallID)
     if dishID is not None:
         dishID = int(dishID)
     print('hall ID is ', hallID)
