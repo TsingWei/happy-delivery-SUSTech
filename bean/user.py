@@ -1,5 +1,5 @@
-from flask_login import UserMixin, login_manager
-from dao.User import User
+from flask_login import UserMixin
+from dao.User import User as DaoUser
 
 # class User:
 #     def __init__(self, sid, name, address):
@@ -12,15 +12,19 @@ from dao.User import User
 #
 #     def get_id(self):
 #         return str(self.sid).encode("utf-8").decode("utf-8")
+
+
 class User(UserMixin):
-    def __init__(self):
+    def __init__(self, dic=None):
         UserMixin.__init__(self)
-        self.curr_order = {
-            'aaa': 5,
-            u'红烧茄子': 1,
-            '馒头': 5,
-            'asdklo': 5
-        }
+        self.curr_order = {}
+        if dic is not None:
+            self.user_id = dic['user_id']
+            self.user_name = dic['user_name']
+            self.user_gender = dic['user_gender']
+            self.user_sid = dic['user_sid']
+            self.user_phone = dic['user_phone']
+            self.user_type = dic['user_type']
 
 
 
@@ -33,5 +37,5 @@ users = [
 
 # 通过用户名，获取用户记录，如果不存在，则返回None
 def query_user(user_id):
-    return User.find_user(user_id=user_id)
+    return DaoUser.find_user(user_id=int(user_id))
 

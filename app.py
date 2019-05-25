@@ -75,13 +75,15 @@ def login():  # 登录页面
 # 如果用户名存在则构建一个新的用户类对象，并使用用户名作为ID
 # 如果不存在，必须返回None
 @login_manager.user_loader
-def load_user(username):
-    if query_user(username) is not None:
-        curr_user = User()
-        curr_user.id = username
+def load_user(user_id):
+    res = query_user(int(user_id))
+    if res is not None:
+        curr_user = User(res[0])
+        curr_user.id = user_id
         return curr_user
     else:
         return None
+
 
 if __name__ == '__main__':
     app.run()
