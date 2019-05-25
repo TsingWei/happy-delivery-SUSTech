@@ -40,10 +40,15 @@ def hello_world():  # 登陆后首页,点餐页面
         global deliveryID
         Delivery.change_order_state_to_AC(int(deliveryID),int(orderID))
     else:
+        rank=Delivery.get_delivery_rank(int(deliveryID))[0][0]['rank']
+        # print('rank',rank)
+        if rank is not None:
+            Delivery.set_delivery_rank(int(deliveryID) ,rank)
+
         order_had_accept=Delivery.get_delivery_current_order(int(deliveryID))
         for o in order_had_accept:
-            print(o[0]['order_id'])
-            get_order.append(o[0]['order_id'])
+            # print(o[0]['order_id'])
+            get_order.append(o['order_id'])
             current_user.get_order = get_order
     orders = Delivery.show_all_NC_order()
     return render_template('home.html', orders=orders)
@@ -52,9 +57,23 @@ def hello_world():  # 登陆后首页,点餐页面
 @app.route('/home.html', methods=['GET', 'POST'])
 @login_required
 def logout():
-    # logout_user()
+    global get_order
+    get_order=[]
     logout_user()
     return render_template('login.html')
+
+
+@app.route('/myOrders', methods=['GET', 'POST'])
+@login_required
+def gotten_order():
+    # global get_order
+    # get_order=[]
+    # logout_user()
+    global deliveryID
+    order_had_accept = Delivery.get_delivery_current_order(int(deliveryID))
+    print(order_had_accept)
+    return render_template('current_get_order.html',order_had_accept=order_had_accept)
+
 
 
 @app.route('/login', methods=['GET', 'POST'])

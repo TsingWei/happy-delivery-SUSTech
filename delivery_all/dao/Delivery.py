@@ -3,7 +3,7 @@ import time
 from sqlalchemy import Column, String, create_engine, Integer
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
-from user_all.dao.Order import Order
+from delivery_all.dao.Order import Order
 
 Base = declarative_base()
 engine = create_engine('mysql+mysqlconnector://'
@@ -68,6 +68,22 @@ class Delivery(Base):
             pass
         else:
             print("please input correct name,phone")
+
+    @staticmethod
+    # 通过name,phone添加新的快递员
+    def set_delivery_rank(deliveryid,rank):
+        if isinstance(deliveryid,int) and isinstance(rank, str):
+            try:
+                session = DBSession()
+                sql = 'update delivery set delivery_rank=\'%s\' where DELIVERY_ID=\'%s\';' % (rank,deliveryid)
+                session.execute(sql)
+                session.commit()
+                session.close()
+            except:
+                print('set_delivery_rank fail')
+            pass
+        else:
+            print("please input correct deliveryid,rank")
 
     @staticmethod
     # 通过delivery_id获得快递员评分
@@ -170,7 +186,7 @@ class Delivery(Base):
                         'order_state': r[7]
 
                     }
-                    k.append([a])
+                    k.append(a)
                 session.commit()
                 session.close()
                 return k
