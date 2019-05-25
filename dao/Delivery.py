@@ -1,8 +1,10 @@
+import time
+
 from sqlalchemy import Column, String, create_engine, Integer
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.sql import and_
-
+from dao.Order import Order
 Base = declarative_base()
 engine = create_engine('mysql+mysqlconnector://'
                        'user_cs307:!2345678@129.204.93.30:3306/cs307')
@@ -148,17 +150,18 @@ class Delivery(Base):
 
     @staticmethod
     # 通过delivery_id获得快递员做过的所有订单
-    def change_order_state_to_AC(id):
-        if isinstance(id, int):
+    def change_order_state_to_AC(deliveryid,orderid):
+        if isinstance(orderid, int):
             try:
 
                 session = DBSession()
-                sql = 'select order_state from `order` where  ORDER_ID=\'%s\';' % ( id)
+                sql = 'select order_state from `order` where  ORDER_ID=\'%s\';' % ( orderid)
                 row = session.execute(sql)
                 for r in row:
                     state=r[0]
                 if state=="NC":
-                    sql = 'update `order` set order_state="AC" where ORDER_ID = \'%s\';' % (id)
+                    Order.modify_order(orderid,delivery_id=deliveryid)
+                    sql = 'update `order` set order_state="AC" where ORDER_ID = \'%s\';' % (orderid)
                     session.execute(sql)
 
                 else:
@@ -184,7 +187,9 @@ class Delivery(Base):
                 for r in row:
                     state=r[0]
                 if state=="AC":
+                    # start_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
                     sql = 'update `order` set order_state="ED" where ORDER_ID = \'%s\';' % (id)
+                    Order.modify_order(id, end_time=time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
                     session.execute(sql)
 
                 else:
@@ -229,7 +234,7 @@ class Delivery(Base):
         pass
 
 if __name__ == '__main__':
-    result = Delivery.show_all_NC_order()
-    for  r in result:
-        print(r)
-    # Delivery.change_order_state_to_ED(623)
+    # result = Delivery.show_all_NC_order()
+    # for  r in result:
+    #     print(r)
+    Delivery. change_order_state_to_ED(11998)
