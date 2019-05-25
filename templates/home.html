@@ -14,7 +14,6 @@
             <div class="container">
 
                 <h2 class="display-4"> LOGO</h2>
-                <form action="{{ url_for('hello_world') }}" method="POST">
                 <div class="row">
 
                     {% for dish in dishes %}
@@ -33,12 +32,14 @@
                             <!-- Text -->
                             <p class="card-text">￥{{ dish.price }}</p>
                             <!-- Button -->
-                            <input type="text" id="dishname" class="form-control mb-4" name="dishname" value="{{ dish.name }}"
+                            <form  method="POST" name="form_{{ dish.id }}">
+
+                                <input type="text" class="form-control mb-4" name="dishname" value={{ dish.name }}
                             >
 
 
-                            <a href="" name="add_dish" type="submit" class="btn btn-primary">选购</a>
-
+                            <button name="add_dish" type="submit" class="btn btn-primary">选购</button>
+                            </form>
                         </div>
 
                     </div>
@@ -46,7 +47,7 @@
                     {% endfor %}
 
                 </div>
-                </form>
+
 
             </div>
         </div>
