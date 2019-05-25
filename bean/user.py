@@ -15,10 +15,8 @@ class User(UserMixin):
     def __init__(self):
         UserMixin.__init__(self)
         self.curr_order = {
-            'aaa': 5,
-            u'红烧茄子': 1,
-            '馒头': 5,
-            'asdklo': 5
+            '红烧茄子': 1,
+            '馒头': 1
         }
 
 

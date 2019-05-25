@@ -32,17 +32,20 @@ def test():
 @login_required
 def hello_world():  # 登陆后首页,点餐页面
     dishes = dish.dishes
-    form = myForm.OrderForm()
+    # form = myForm.OrderForm()
     dishID = request.form.get('dishname')
     print(dishID)
     curr_user.curr_order['asdasdsad'] = 1
-    return render_template('home.html', dishes=dishes, form=form)
+    for eachKey in curr_user.curr_order.keys():
+        print(eachKey)
+    return render_template('home.html', dishes=dishes)
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():  # 登录页面
     if request.method == 'POST':
         username = request.form.get('username')
+        print(username)
         user = query_user(username)
 
         # 验证表单中提交的用户名和密码
