@@ -9,36 +9,36 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container" style="background-image: url(/static/img/lightbg.jpg)">
+    <div class="container" style="background-image: url(/user_all/static/img/lightbg.jpg)">
         <div class="jumbotron" style="background: none">
             <div class="container">
 
-                <h2 class="display-4"> LOGO</h2>
+                <h2 class="display-4"> 外卖人员</h2>
                 <div class="row">
 
-                    {% for dish in dishes %}
+                    {% for order in orders %}
                     <!-- Card -->
                     <div class="card col-md-3">
-
-                        <!-- Card image -->
-                        <img class="card-img-top" src="{{ dish.image_url }}"
-                             alt="Card image cap">
 
                         <!-- Card content -->
                         <div class="card-body">
 
                             <!-- Title -->
-                            <h4 class="card-title"><a>{{ dish.name }}</a></h4>
+                            <h4 class="card-title">订单号：<a>{{ order.order_id }}</a></h4>
                             <!-- Text -->
-                            <p class="card-text">￥{{ dish.price }}</p>
+                            <p class="card-text">地址：{{ order.address_name }}</p>
+                            <!-- Text -->
+                            <p class="card-text">电话：{{ order.address_phone }}</p>
+                            <!-- Text -->
+                            <p class="card-text">金额：{{ order.order_price }}</p>
+                            <!-- Text -->
+                            <p class="card-text">下单时间：{{ order.start_time}}</p>
+                            <!-- Text -->
+                            <p class="card-text">备注：{{ order.remark}}</p>
+
                             <!-- Button -->
-                            <form  method="POST" name="form_{{ dish.id }}">
-
-                                <input type="text" class="form-control mb-4" name="dishname" value={{ dish.name }}
-                            >
-
-
-                            <button name="add_dish" type="submit" class="btn btn-primary">选购</button>
+                            <form  method="POST" name="form_{{ order.order_id}}">
+                            <button name="get_order" type="submit" class="btn btn-primary">接单</button>
                             </form>
                         </div>
 
@@ -52,13 +52,12 @@
             </div>
         </div>
     <div class="card" id = "orders">
-                    我的订单
+                    我的接单
                     <ul class="list-group">
 
-                        {% for dish in current_user.curr_order.items() %}
+                        {% for order in get_order %}
                             <li class="list-group-item d-flex justify-content-between align-items-center">
-                                {{ dish[0] }}
-                                <span class="badge badge-primary badge-pill">{{ dish[1] }}</span>
+                                {{ order }}
                             </li>
                         {% endfor %}
                     </ul>

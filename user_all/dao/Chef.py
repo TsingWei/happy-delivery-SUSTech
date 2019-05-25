@@ -69,7 +69,7 @@ class Chef(Base):
         peter = session.query(Chef).filter(condition).all()
         session.close()
         if peter is None:
-            return None
+            return data
         for item in peter:
             dic = {
                 'chef_id': item.chef_id,
