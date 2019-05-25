@@ -8,4 +8,5 @@ class LoginForm(FlaskForm):
 
 class OrderForm(FlaskForm):
     dishID = HiddenField()
+    dishname = StringField('dishname')
     add = SubmitField('买')

@@ -1,7 +1,7 @@
 from flask import Flask, render_template, redirect, url_for, flash, request
 from flask_bootstrap import Bootstrap
 from flask_bootstrap import WebCDN
-from flask_login import LoginManager, login_user, login_required,logout_user
+from flask_login import LoginManager, login_user, login_required,logout_user,current_user
 
 import bean.dish as dish
 from bean.user import User
@@ -14,7 +14,6 @@ bootstrap = Bootstrap(app)
 login_manager.init_app(app)
 login_manager.session_protection = 'strong'
 login_manager.login_view = 'login'
-curr_user = User()
 
 app.extensions['bootstrap']['cdns']['jquery'] = WebCDN(
     '//cdnjs.cloudflare.com/ajax/libs/jquery/4.6.0/'
@@ -32,11 +31,13 @@ def test():
 @login_required
 def hello_world():  # 登陆后首页,点餐页面
     dishes = dish.dishes
-    form = myForm.OrderForm()
+    # form = myForm.OrderForm()
     dishID = request.form.get('dishname')
     print(dishID)
-    curr_user.curr_order['asdasdsad'] = 1
-    return render_template('home.html', dishes=dishes, form=form)
+    current_user.curr_order[dishID] = 1
+    for eachKey in current_user.curr_order.keys():
+        print(eachKey)
+    return render_template('home.html', dishes=dishes)
 
 
 @app.route('/home.html', methods=['GET', 'POST'])
@@ -51,6 +52,7 @@ def logout():
 def login():  # 登录页面
     if request.method == 'POST':
         username = request.form.get('username')
+        print(username)
         user = query_user(username)
 
         # 验证表单中提交的用户名和密码

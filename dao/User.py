@@ -27,7 +27,7 @@ class User(Base):
 
     # 新建用户
     @staticmethod
-    def add_user(name=None, gender=None, sid=None, phone=None, user_type=None):
+    def add_user(name, gender, sid, phone, user_type):
         if name is None or not isinstance(name, str):
             raise Exception("Name Error! It must be a no none String!")
         if gender != 'F' and gender != 'M':
