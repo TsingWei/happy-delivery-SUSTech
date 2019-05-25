@@ -20,6 +20,36 @@ class Delivery(Base):
     delivery_service_year = Column(Integer)
     delivery_rank = Column(Integer)
 
+
+    @staticmethod
+    #通过name,phone添加新的快递员
+    def get_delivery_info(id):
+        if isinstance(id, int) :
+            try:
+                session = DBSession()
+                sql = 'select * from delivery where DELIVERY_ID=\'%s\';' % (id)
+                row=session.execute(sql)
+                for r in row:
+                    # print(r)
+                    a={
+                        'id':r[0],
+                        'name':r[1],
+                        'phone':r[2],
+                        'path':r[3],
+                        'rank':r[4],
+                        'year':r[5]
+                    }
+
+                session.commit()
+                session.close()
+                return a
+            except:
+                print('register_new_delivery fail')
+            pass
+        else:
+            print("please input correct name,phone")
+
+
     @staticmethod
     #通过name,phone添加新的快递员
     def register_new_delivery(name,phone):
@@ -236,5 +266,5 @@ if __name__ == '__main__':
     # result = Delivery.show_all_NC_order()
     # for  r in result:
     #     print(r)
-    Delivery. change_order_state_to_ED(11998)
+    print(Delivery.get_delivery_info(8))
     []
