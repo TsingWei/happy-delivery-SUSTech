@@ -17,14 +17,14 @@ from dao.User import User as DaoUser
 class User(UserMixin):
     def __init__(self, dic=None):
         UserMixin.__init__(self)
-        self.curr_order = {}
+        self.get_order = []
         if dic is not None:
-            self.user_id = dic['user_id']
-            self.user_name = dic['user_name']
-            self.user_gender = dic['user_gender']
-            self.user_sid = dic['user_sid']
-            self.user_phone = dic['user_phone']
-            self.user_type = dic['user_type']
+            self.delivery_id= dic['delivery_id']
+            self.delivery_name= dic['delivery_name']
+            self.delivery_path = dic['delivery_path']
+            self.delivery_service_year= dic['delivery_service_year']
+            self.delivery_phone = dic['delivery_phone']
+            self.delivery_rank = dic['delivery_rank']
 
 
 

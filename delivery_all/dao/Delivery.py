@@ -238,4 +238,3 @@ if __name__ == '__main__':
     # for  r in result:
     #     print(r)
     Delivery. change_order_state_to_ED(11998)
-    []

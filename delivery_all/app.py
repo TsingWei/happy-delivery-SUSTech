@@ -3,10 +3,10 @@ from flask_bootstrap import Bootstrap
 from flask_bootstrap import WebCDN
 from flask_login import LoginManager, login_user, login_required,logout_user,current_user
 
-import bean.dish as dish
-from bean.user import User
-from bean.user import query_user
-from adapter import form as myForm
+# import bean.dish as dish
+from delivery_all.bean.user import User
+from delivery_all.bean.user import query_user
+from delivery_all.dao.Delivery import Delivery
 
 login_manager = LoginManager()
 app = Flask(__name__)
@@ -20,7 +20,7 @@ app.extensions['bootstrap']['cdns']['jquery'] = WebCDN(
 )
 
 app.secret_key = '11111111'  # CSRF密钥
-
+get_order = []
 
 # 测试页面
 @app.route('/test')
@@ -30,14 +30,13 @@ def test():
 @app.route('/', methods=['GET', 'POST'])
 @login_required
 def hello_world():  # 登陆后首页,点餐页面
-    dishes = dish.dishes
+    global get_order
+
     # form = myForm.OrderForm()
-    dishID = request.form.get('dishname')
-    print(dishID)
-    current_user.curr_order[dishID] = 1
-    for eachKey in current_user.curr_order.keys():
-        print(eachKey)
-    return render_template('home.html', dishes=dishes)
+    orderID = request.form.get('order_id')
+    orders = Delivery.show_all_NC_order()
+    get_order.append(orderID)
+    return render_template('home.html', orders=orders)
 
 
 @app.route('/home.html', methods=['GET', 'POST'])
