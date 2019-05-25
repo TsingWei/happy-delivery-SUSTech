@@ -1,8 +1,9 @@
-from sqlalchemy import Column, String, create_engine, Integer, desc
+from sqlalchemy import Column, String, create_engine, Integer
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.sql import and_
 from dao.Chef import Chef
-from dao.Chef_to_dish import ChefToDish
+from dao.ChefToDish import ChefToDish
 from dao.Dish import Dish
 
 Base = declarative_base()
@@ -45,7 +46,7 @@ class Hall(Base):
 
     # 查看食堂下菜品
     @staticmethod
-    def get_dish(hall_id):
+    def get_dishes(hall_id):
         if hall_id is None or not isinstance(hall_id, int):
             raise Exception("Hall ID Error! It should be a no none Integer! Not ", hall_id)
 
@@ -54,11 +55,11 @@ class Hall(Base):
             .query(Hall.hall_id, Dish.dish_id, Dish.dish_image_path
                    , Dish.dish_description, Dish.dish_price, Dish.dish_name) \
             .order_by(Dish.dish_id) \
-            .distinct(Dish.dish_id) \
             .join(Chef, Chef.hall_id == Hall.hall_id)\
             .join(ChefToDish, ChefToDish.chef_id == Chef.chef_id)\
-            .join(Dish, ChefToDish.dish_id == Dish.dish_id).filter(Hall.hall_id == hall_id)\
-            .all()
+            .join(Dish, ChefToDish.dish_id == Dish.dish_id)\
+            .filter(Hall.hall_id == hall_id)\
+            .distinct().all()
         if dish is None:
             return []
         data = []
@@ -74,7 +75,31 @@ class Hall(Base):
             data.append(dic)
         return data
 
+    # 获得chef to dish 中的id
+    @staticmethod
+    def get_chef_id(dish_id, hall_id):
+        if dish_id is None or not isinstance(dish_id, int):
+            raise Exception('Dish id Error! It should be a no none Integer! Not', dish_id)
+
+        condition = (Hall.hall_id == hall_id)
+        condition = and_(condition, Dish.dish_id == dish_id)
+        condition = and_(condition, ChefToDish.remain > 0)
+        session = DBSession()
+        rid = session\
+            .query(Dish.dish_id, ChefToDish.chef_id, ChefToDish.id)\
+            .join(ChefToDish, Dish.dish_id == ChefToDish.dish_id)\
+            .join(Chef, Chef.chef_id == ChefToDish.chef_id)\
+            .join(Hall, Hall.hall_id == Chef.hall_id) \
+            .filter(condition) \
+            .first()
+        if rid is None:
+            return None
+        session.commit()
+        session.close()
+        return rid
+
 
 if __name__ == '__main__':
-    for i in Hall.get_dish(3):
+    for i in Hall.get_dishes(3):
         print(i)
+    # print(Hall.get_chef_id(5, 1))
