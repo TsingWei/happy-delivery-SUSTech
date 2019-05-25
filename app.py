@@ -1,7 +1,7 @@
 from flask import Flask, render_template, redirect, url_for, flash, request
 from flask_bootstrap import Bootstrap
 from flask_bootstrap import WebCDN
-from flask_login import LoginManager, login_user, login_required
+from flask_login import LoginManager, login_user, login_required,logout_user
 
 import bean.dish as dish
 from bean.user import User
@@ -39,6 +39,14 @@ def hello_world():  # 登陆后首页,点餐页面
     return render_template('home.html', dishes=dishes, form=form)
 
 
+@app.route('/home.html', methods=['GET', 'POST'])
+@login_required
+def logout():
+    # logout_user()
+    logout_user()
+    return render_template('login.html')
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():  # 登录页面
     if request.method == 'POST':
@@ -55,6 +63,7 @@ def login():  # 登录页面
 
             # 如果请求中有next参数，则重定向到其指定的地址，
             # 没有next参数，则重定向到"index"视图
+            print(11111111111111111111111111)
             next = request.args.get('next')
             return redirect(next or url_for('hello_world'))
 
@@ -71,6 +80,8 @@ def load_user(username):
         curr_user = User()
         curr_user.id = username
         return curr_user
+    else:
+        return None
 
 if __name__ == '__main__':
     app.run()
