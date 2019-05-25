@@ -7,6 +7,7 @@ import bean.dish as dish
 from bean.user import User
 from bean.user import query_user
 from adapter import form as myForm
+import cook_all.bean.comment as comment
 
 login_manager = LoginManager()
 app = Flask(__name__)
@@ -46,6 +47,17 @@ def logout():
     # logout_user()
     logout_user()
     return render_template('login.html')
+
+@app.route('/comments', methods=['GET'])
+@login_required
+def comments():
+    # comments = get_comments(dish_id, current_user.id)
+
+    comments = comment.comments
+    return render_template('commets.html',comments=comments,dish_name = "红烧猪蹄")
+
+
+
 
 
 @app.route('/login', methods=['GET', 'POST'])
