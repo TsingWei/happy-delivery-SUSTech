@@ -2,10 +2,9 @@ from flask import Flask, render_template, redirect, url_for, flash, request
 from flask_bootstrap import Bootstrap
 from flask_bootstrap import WebCDN
 from flask_login import LoginManager, login_user, login_required,logout_user,current_user
-
-import user_all.bean.dish as dish
-from user_all.bean.user import User
-from user_all.bean.user import query_user
+from cook_all.adapter import dishadapter
+from cook_all.bean.user import Cook
+from cook_all.bean.user import query_user
 import cook_all.bean.comment as comment
 
 login_manager = LoginManager()
@@ -30,11 +29,13 @@ def test():
 @app.route('/', methods=['GET', 'POST'])
 @login_required
 def hello_world():  # 登陆后首页,点餐页面
-    dishes = dish.dishes
     # form = myForm.OrderForm()
-    dishID = request.form.get('dishname')
-    print(dishID)
-    current_user.curr_order[dishID] = 1
+    chefid = request.form.get('dishname')
+    current_user.curr_order[chefid] = 1
+    print(chefid)
+    if chefid is None:
+        chefid = 1
+    dishes = dishadapter.getalldish(chefid)
     for eachKey in current_user.curr_order.keys():
         print(eachKey)
     return render_template('home.html', dishes=dishes)
@@ -68,7 +69,7 @@ def login():  # 登录页面
 
         # 验证表单中提交的用户名和密码
         if user is not None:
-            curr_user = User()
+            curr_user = Cook()
             curr_user.id = username
 
             # 通过Flask-Login的login_user方法登录用户
@@ -88,11 +89,12 @@ def login():  # 登录页面
 # 如果用户名存在则构建一个新的用户类对象，并使用用户名作为ID
 # 如果不存在，必须返回None
 @login_manager.user_loader
-def load_user(user_id):
-    res = query_user(int(user_id))
+def load_user(chefid):
+    res = query_user(int(chefid))
+    print(res)
     if res is not None:
-        curr_user = User(res[0])
-        curr_user.id = user_id
+        curr_user = Cook(res[0])
+        curr_user.id = chefid
         return curr_user
     else:
         return None

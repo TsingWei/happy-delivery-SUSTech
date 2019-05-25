@@ -39,7 +39,7 @@ def hello_world():  # 登陆后首页,点餐页面
         hallID = 1
 
     print('hall ID is ', hallID)
-    dishes = dishAdapter.getAlldish(hallID)
+    dishes = dishAdapter.getalldish(hallID)
     print(dishID)
     if dishID in curr_order:
         curr_order[dishID] += 1
