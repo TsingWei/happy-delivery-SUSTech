@@ -3,8 +3,7 @@ import time
 from sqlalchemy import Column, String, create_engine, Integer
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
-from delivery_all.dao.Order import Order
-
+from user_all.dao import Order
 Base = declarative_base()
 engine = create_engine('mysql+mysqlconnector://'
                        'user_cs307:!2345678@129.204.93.30:3306/cs307')
@@ -30,22 +29,20 @@ class Delivery(Base):
                 session = DBSession()
                 sql = 'select * from delivery where DELIVERY_ID=\'%s\';' % (id)
                 row=session.execute(sql)
-                k=[]
                 for r in row:
                     # print(r)
-
                     a={
-                        'delivery_id':r[0],
-                        'delivery_name':r[1],
-                        'delivery_phone':r[2],
-                        'delivery_path':r[3],
-                        'delivery_rank':r[4],
-                        'delivery_year':r[5]
+                        'id':r[0],
+                        'name':r[1],
+                        'phone':r[2],
+                        'path':r[3],
+                        'rank':r[4],
+                        'year':r[5]
                     }
-                    k.append(a)
+
                 session.commit()
                 session.close()
-                return k
+                return a
             except:
                 print('register_new_delivery fail')
             pass
@@ -68,22 +65,6 @@ class Delivery(Base):
             pass
         else:
             print("please input correct name,phone")
-
-    @staticmethod
-    # 通过name,phone添加新的快递员
-    def set_delivery_rank(deliveryid,rank):
-        if isinstance(deliveryid,int) and isinstance(rank, str):
-            try:
-                session = DBSession()
-                sql = 'update delivery set delivery_rank=\'%s\' where DELIVERY_ID=\'%s\';' % (rank,deliveryid)
-                session.execute(sql)
-                session.commit()
-                session.close()
-            except:
-                print('set_delivery_rank fail')
-            pass
-        else:
-            print("please input correct deliveryid,rank")
 
     @staticmethod
     # 通过delivery_id获得快递员评分
@@ -186,7 +167,7 @@ class Delivery(Base):
                         'order_state': r[7]
 
                     }
-                    k.append(a)
+                    k.append([a])
                 session.commit()
                 session.close()
                 return k
@@ -201,17 +182,14 @@ class Delivery(Base):
     def change_order_state_to_AC(deliveryid,orderid):
         if isinstance(orderid, int):
             try:
-                print(deliveryid,orderid)
+
                 session = DBSession()
                 sql = 'select order_state from `order` where  ORDER_ID=\'%s\';' % ( orderid)
                 row = session.execute(sql)
                 for r in row:
                     state=r[0]
-                print(state)
                 if state=="NC":
-                    print(1)
                     Order.modify_order(orderid,delivery_id=deliveryid)
-                    print(2)
                     sql = 'update `order` set order_state="AC" where ORDER_ID = \'%s\';' % (orderid)
                     session.execute(sql)
 
@@ -220,12 +198,11 @@ class Delivery(Base):
                 session.commit()
                 session.close()
                 # return k
-            except Exception as e:
-                print(e)
-                print('change_order_state_to_AC fail')
+            except:
+                print('change_order_state')
             pass
         else:
-            print("please input correct argument")
+            print("change_order_state")
 
     @staticmethod
     # 通过delivery_id获得快递员做过的所有订单

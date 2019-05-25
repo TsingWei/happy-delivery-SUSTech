@@ -143,6 +143,7 @@ class Order(Base):
     @staticmethod
     def modify_order(order_id, address_id=None, state=None, start_time=None,
                      delivery_id=None, price=None, end_time=None, remark=None):
+        print("here")
         if order_id is None or not isinstance(order_id, int):
             raise Exception("Order id Error! It should be a no none Integer! Not ", order_id)
         if address_id is not None and not isinstance(address_id, int):
