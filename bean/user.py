@@ -1,5 +1,5 @@
 from flask_login import UserMixin, login_manager
-from dao.User import User
+from dao.User import User as daoUser
 
 # class User:
 #     def __init__(self, sid, name, address):
@@ -31,5 +31,6 @@ users = [
 
 # 通过用户名，获取用户记录，如果不存在，则返回None
 def query_user(user_id):
-    return User.find_user(user_id=user_id)
+    user_id = int(user_id)
+    return daoUser.find_user(user_id=user_id)
 
