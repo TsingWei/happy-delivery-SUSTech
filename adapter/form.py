@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, HiddenField
 
 
 class LoginForm(FlaskForm):
@@ -7,4 +7,5 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Submit')
 
 class OrderForm(FlaskForm):
-    dishID = StringField(validators=[id()])
+    dishID = HiddenField()
+    add = SubmitField('买')

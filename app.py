@@ -6,6 +6,7 @@ from flask_login import LoginManager, login_user, login_required
 import bean.dish as dish
 from bean.user import User
 from bean.user import query_user
+from adapter import form as myForm
 
 login_manager = LoginManager()
 app = Flask(__name__)
@@ -13,6 +14,7 @@ bootstrap = Bootstrap(app)
 login_manager.init_app(app)
 login_manager.session_protection = 'strong'
 login_manager.login_view = 'login'
+curr_user = User()
 
 app.extensions['bootstrap']['cdns']['jquery'] = WebCDN(
     '//cdnjs.cloudflare.com/ajax/libs/jquery/4.6.0/'
@@ -26,11 +28,15 @@ app.secret_key = '11111111'  # CSRF密钥
 def test():
     return render_template('base.html')
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 @login_required
 def hello_world():  # 登陆后首页,点餐页面
     dishes = dish.dishes
-    return render_template('home.html', dishes=dishes)
+    form = myForm.OrderForm()
+    dishID = request.form.get('dishname')
+    print(dishID)
+    curr_user.curr_order['asdasdsad'] = 1
+    return render_template('home.html', dishes=dishes, form=form)
 
 
 @app.route('/login', methods=['GET', 'POST'])
