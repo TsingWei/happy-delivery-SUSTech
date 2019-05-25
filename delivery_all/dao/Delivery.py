@@ -3,7 +3,8 @@ import time
 from sqlalchemy import Column, String, create_engine, Integer
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
-from user_all.dao import Order
+from user_all.dao.Order import Order
+
 Base = declarative_base()
 engine = create_engine('mysql+mysqlconnector://'
                        'user_cs307:!2345678@129.204.93.30:3306/cs307')
@@ -19,6 +20,38 @@ class Delivery(Base):
     delivery_path = Column(String(45))
     delivery_service_year = Column(Integer)
     delivery_rank = Column(Integer)
+
+
+    @staticmethod
+    #通过name,phone添加新的快递员
+    def get_delivery_info(id):
+        if isinstance(id, int) :
+            try:
+                session = DBSession()
+                sql = 'select * from delivery where DELIVERY_ID=\'%s\';' % (id)
+                row=session.execute(sql)
+                k=[]
+                for r in row:
+                    # print(r)
+
+                    a={
+                        'delivery_id':r[0],
+                        'delivery_name':r[1],
+                        'delivery_phone':r[2],
+                        'delivery_path':r[3],
+                        'delivery_rank':r[4],
+                        'delivery_year':r[5]
+                    }
+                    k.append(a)
+                session.commit()
+                session.close()
+                return k
+            except:
+                print('register_new_delivery fail')
+            pass
+        else:
+            print("please input correct name,phone")
+
 
     @staticmethod
     #通过name,phone添加新的快递员
@@ -152,14 +185,17 @@ class Delivery(Base):
     def change_order_state_to_AC(deliveryid,orderid):
         if isinstance(orderid, int):
             try:
-
+                print(deliveryid,orderid)
                 session = DBSession()
                 sql = 'select order_state from `order` where  ORDER_ID=\'%s\';' % ( orderid)
                 row = session.execute(sql)
                 for r in row:
                     state=r[0]
+                print(state)
                 if state=="NC":
+                    print(1)
                     Order.modify_order(orderid,delivery_id=deliveryid)
+                    print(2)
                     sql = 'update `order` set order_state="AC" where ORDER_ID = \'%s\';' % (orderid)
                     session.execute(sql)
 
@@ -168,11 +204,12 @@ class Delivery(Base):
                 session.commit()
                 session.close()
                 # return k
-            except:
-                print('change_order_state')
+            except Exception as e:
+                print(e)
+                print('change_order_state_to_AC fail')
             pass
         else:
-            print("change_order_state")
+            print("please input correct argument")
 
     @staticmethod
     # 通过delivery_id获得快递员做过的所有订单
@@ -236,4 +273,5 @@ if __name__ == '__main__':
     # result = Delivery.show_all_NC_order()
     # for  r in result:
     #     print(r)
-    Delivery. change_order_state_to_ED(11998)
+    print(Delivery.get_delivery_info(8))
+    []

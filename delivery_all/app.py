@@ -21,7 +21,7 @@ app.extensions['bootstrap']['cdns']['jquery'] = WebCDN(
 
 app.secret_key = '11111111'  # CSRF密钥
 get_order = []
-
+deliveryID = -1
 # 测试页面
 @app.route('/test')
 def test():
@@ -34,8 +34,18 @@ def hello_world():  # 登陆后首页,点餐页面
 
     # form = myForm.OrderForm()
     orderID = request.form.get('order_id')
+    if orderID is not None:
+        get_order.append(orderID)
+        current_user.get_order = get_order
+        global deliveryID
+        Delivery.change_order_state_to_AC(int(deliveryID),int(orderID))
+    else:
+        order_had_accept=Delivery.get_delivery_current_order(int(deliveryID))
+        for o in order_had_accept:
+            print(o[0]['order_id'])
+            get_order.append(o[0]['order_id'])
+            current_user.get_order = get_order
     orders = Delivery.show_all_NC_order()
-    get_order.append(orderID)
     return render_template('home.html', orders=orders)
 
 
@@ -50,21 +60,19 @@ def logout():
 @app.route('/login', methods=['GET', 'POST'])
 def login():  # 登录页面
     if request.method == 'POST':
-        username = request.form.get('username')
-        print(username)
-        user = query_user(username)
-
+        global deliveryID
+        deliveryID = request.form.get('username')
+        # print(type(deliveryID))
+        user = query_user(deliveryID)
         # 验证表单中提交的用户名和密码
         if user is not None:
             curr_user = User()
-            curr_user.id = username
-
+            curr_user.id = deliveryID
             # 通过Flask-Login的login_user方法登录用户
             login_user(curr_user)
-
+            # print("login after")
             # 如果请求中有next参数，则重定向到其指定的地址，
             # 没有next参数，则重定向到"index"视图
-            print(11111111111111111111111111)
             next = request.args.get('next')
             return redirect(next or url_for('hello_world'))
 
@@ -80,7 +88,7 @@ def load_user(user_id):
     res = query_user(int(user_id))
     if res is not None:
         curr_user = User(res[0])
-        curr_user.delivery_id = user_id
+        curr_user.id= user_id
         return curr_user
     else:
         return None

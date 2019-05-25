@@ -1,5 +1,5 @@
 from flask_login import UserMixin
-from delivery_all.dao.User import User as DaoUser
+from delivery_all.dao.Delivery import Delivery
 
 # class User:
 #     def __init__(self, sid, name, address):
@@ -19,10 +19,11 @@ class User(UserMixin):
         UserMixin.__init__(self)
         self.get_order = []
         if dic is not None:
+            # print("111111111111111111111111111111")
             self.delivery_id= dic['delivery_id']
             self.delivery_name= dic['delivery_name']
             self.delivery_path = dic['delivery_path']
-            self.delivery_service_year= dic['delivery_service_year']
+            self.delivery_service_year= dic['delivery_year']
             self.delivery_phone = dic['delivery_phone']
             self.delivery_rank = dic['delivery_rank']
 
@@ -37,5 +38,6 @@ users = [
 
 # 通过用户名，获取用户记录，如果不存在，则返回None
 def query_user(user_id):
-    return DaoUser.find_user(user_id=int(user_id))
+    return Delivery.get_delivery_info(int(user_id))
+    # return None
 
