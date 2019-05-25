@@ -110,8 +110,7 @@ class Dish(Base):
 
 
 if __name__ == '__main__':
-    Dish.new_dish('新菜品', '新描述', 10086.1)
+    # Dish.new_dish('新菜品', '新描述', 10086.1)
     # for i in Dish.find_dish(dish_name='新厨师'):
     #     Dish.modify_dish(i['dish_id'], dish_service_year=5, hall_id=3)
     print(Dish.find_dish(dish_name='新菜品'))
-    # Dish.del_dish(dish_name='新厨师')
