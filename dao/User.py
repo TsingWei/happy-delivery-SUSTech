@@ -27,7 +27,7 @@ class User(Base):
 
     # 新建用户
     @staticmethod
-    def add_user(name=None, gender=None, sid=None, phone=None, user_type=None):
+    def add_user(name, gender, sid, phone, user_type):
         if name is None or not isinstance(name, str):
             raise Exception("Name Error! It must be a no none String!")
         if gender != 'F' and gender != 'M':
@@ -51,7 +51,7 @@ class User(Base):
         data = []
 
         if user_id is not None and not isinstance(user_id, int):
-            raise Exception("Uid Error! Cannot be ", user_id)
+            raise Exception("Uid Error! It must be a no none integer ", user_id)
         if user_name is not None and not isinstance(user_name, str):
             raise Exception("User name Error! It must be a no none String!")
         if user_gender is not None and user_gender != 'M' and user_gender != 'F':
