@@ -42,7 +42,7 @@ class Dish(Base):
     @staticmethod
     def find_dish(dish_id=None, dish_name=None, dish_description=None, dish_image_path=None, dish_price=None):
         if dish_id is not None and not isinstance(dish_id, int):
-            raise Exception("Dish name Error! It should be an Integer! Not ", dish_id)
+            raise Exception("Dish id Error! It should be an Integer! Not ", dish_id)
         if dish_name is not None and not isinstance(dish_name, str):
             raise Exception("Dish name Error! It should be a String! Not ", dish_name)
         if dish_description is not None and not isinstance(dish_description, str):
@@ -68,7 +68,7 @@ class Dish(Base):
         session = DBSession()
         peter = session.query(Dish).filter(condition).all()
         session.close()
-        if peter is None:
+        if not peter:
             return None
         for item in peter:
             dic = {

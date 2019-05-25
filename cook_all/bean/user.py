@@ -23,7 +23,7 @@ class Cook(UserMixin):
             self.chef_service_year = dic['chef_service_year']
             self.chef_name = dic['chef_name']
             self.chef_rank = dic['chef_rank']
-            self.hall_in = dic['hall_in']
+            self.hall_id = dic['hall_id']
 
 
 

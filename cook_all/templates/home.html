@@ -30,13 +30,14 @@
                             <!-- Title -->
                             <h4 class="card-title"><a>{{ dish.name }}</a></h4>
                             <!-- Text -->
-{#                            <p class="card-text">￥{{ dish.price }}</p>#}
+                            <p class="card-text">Rank: {{ dish.rank }}</p>
+                            <p class="card-text">剩余: {{ dish.remain }}</p>
                             <!-- Button -->
                             <form  method="POST" name="form_{{ dish.id }}">
 
-                                <input type="hidden" class="form-control mb-4" name="dishname" value={{ dish.name }}
+                                <input type="hidden" class="form-control mb-4" name="dishid" value={{ dish.id }}
                             >
-                            <button href={{ url_for('comments') }} name="see_comment" class="btn btn-primary">查看评价</button>
+                            <button href="{{ url_for('comments') }}" type="submit" name="see_comment" class="btn btn-primary" value={{ dish.id }}>查看评价</button>
                             <button name="add_dish" type="submit" class="btn btn-primary">增加</button>
                             </form>
                         </div>

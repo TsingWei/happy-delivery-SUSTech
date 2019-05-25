@@ -68,8 +68,8 @@ class Chef(Base):
         session = DBSession()
         peter = session.query(Chef).filter(condition).all()
         session.close()
-        if peter is None:
-            return data
+        if not peter:
+            return None
         for item in peter:
             dic = {
                 'chef_id': item.chef_id,
@@ -146,18 +146,18 @@ class Chef(Base):
         if isinstance(chefid, int):
             try:
                 session = DBSession()
-                sql='select CHEF_NAME,DISH_NAME,COMMENT_DETAILS,COMMENT_RANK from (select * from dish_comment join chef join dish on ' \
+                sql='select DISTINCT CHEF_NAME,b.DISH_ID,DISH_NAME,COMMENT_DETAILS,COMMENT_RANK from (select * from dish_comment join chef join dish on ' \
                     'COMMENT_CHEFID=CHEF_ID and COMMENT_DISHID=DISH_ID  where COMMENT_CHEFID=\'%s\' order by DISH_NAME)a ' \
                     'join (select DISH_ID from chef_to_dish where CHEF_ID=\'%s\')b on a.DISH_ID=b.DISH_ID;'%(chefid,chefid)
                 row = session.execute(sql)
                 k=[]
                 for r in row:
                     a = {
-                        'chef_name':r[0],
-                        'dish_name': r[1],
-                        'comment_detail': r[2],
-                        'comment_rank': r[3]
-
+                        'chef_name': r[0],
+                        'dish_id': r[1],
+                        'dish_name': r[2],
+                        'comment_detail': r[3],
+                        'comment_rank': r[4]
                     }
                     k.append(a)
                 session.commit()
@@ -337,5 +337,6 @@ if __name__ == '__main__':
     #     Chef.modify_chef(i['chef_id'], chef_service_year=5, hall_id=3)
     # print(Chef.find_chef(chef_name='新厨师'))
     # Chef.del_chef(chef_name='新厨师')
-    k='asdadasd'
-    Chef.delete_dish_from_chef_id(4,5)
+    # k='asdadasd'
+    for i in Chef.get_dish_comment_from_chef_id(3):
+        print(i)

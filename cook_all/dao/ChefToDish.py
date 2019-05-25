@@ -140,17 +140,15 @@ class ChefToDish(Base):
     @staticmethod
     def modify_remain(chef_id, dish_id, remain):
         if chef_id is None or not isinstance(chef_id, int):
-            raise Exception('Chef is Error! It should be a no none Integer! Not ', chef_id)
+            raise Exception('Chef id is Error! It should be a no none Integer! Not ', chef_id)
         if dish_id is None or not isinstance(dish_id, int):
-            raise Exception('Dish is Error! It should be a no none Integer! Not ', dish_id)
+            raise Exception('Dish id is Error! It should be a no none Integer! Not ', dish_id)
         if remain is not None and not isinstance(remain, int):
             raise Exception('Remain is Error! It should be an Integer! Not ', remain)
         session = DBSession()
         condition = (ChefToDish.chef_id == chef_id)
         condition = and_(condition, ChefToDish.dish_id == dish_id)
         peter = session.query(ChefToDish).filter(condition).first()
-        print(peter.remain)
         peter.remain += remain
-        print(peter.remain)
         session.commit()
         session.close()
