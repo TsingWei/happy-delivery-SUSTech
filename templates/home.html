@@ -75,6 +75,9 @@
                             </li>
                         {% endfor %}
                     </ul>
+                <form  name="confirm" method="GET">
+                    <button href="{{ url_for('order_done') }}" class="btn btn-amber" type="submit" >确定</button>
+                </form>
                 </div>
     <button onclick="topFunction()" class="btn btn-amber " id="myBtn" style=" border-radius: 0" title="Go to top"><i style="font-size: 2em" class="fas fa-angle-up"></i></button>
     </div>

@@ -46,8 +46,6 @@ def hello_world():  # 登陆后首页,点餐页面
     else:
         curr_order[dishID] = 1
     current_user.curr_order = curr_order
-    for eachKey in current_user.curr_order.keys():
-        print(eachKey)
     return render_template('home.html', dishes=dishes)
 
 
@@ -58,6 +56,11 @@ def logout():
     logout_user()
     return render_template('login.html')
 
+@app.route('/order_done', methods=['GET', 'POST'])
+@login_required
+def order_done():
+    curr_order.clear()
+    return('下单成功!')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():  # 登录页面
@@ -76,7 +79,6 @@ def login():  # 登录页面
 
             # 如果请求中有next参数，则重定向到其指定的地址，
             # 没有next参数，则重定向到"index"视图
-            print(11111111111111111111111111)
             next = request.args.get('next')
             return redirect(next or url_for('hello_world'))
 
