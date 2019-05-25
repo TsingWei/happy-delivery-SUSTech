@@ -456,7 +456,7 @@ class Manager(Base):
 
 if __name__ == '__main__':
 
-    result = Manager.set_chef_to_dish_by_id_change(1,1)
+    result = Manager.set_chef_to_dish_by_remain(101)
     # for i in result:
     #     print(i)
 
