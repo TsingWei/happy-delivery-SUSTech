@@ -14,7 +14,9 @@
             <div class="container">
 
                 <h2 class="display-4"> LOGO</h2>
+                <form action="{{ url_for('hello_world') }}" method="POST">
                 <div class="row">
+
                     {% for dish in dishes %}
                     <!-- Card -->
                     <div class="card col-md-3">
@@ -31,15 +33,31 @@
                             <!-- Text -->
                             <p class="card-text">￥{{ dish.price }}</p>
                             <!-- Button -->
-                            <a href="#" class="btn btn-primary">选购</a>
+                            <a href="" name="add_dish" type="submit" class="btn btn-primary">选购</a>
 
                         </div>
 
                     </div>
                     <!-- Card -->
                     {% endfor %}
+
                 </div>
+                </form>
+
             </div>
         </div>
+    <div class="card" id = "orders">
+                    我的订单
+                    <ul class="list-group">
+
+                        {% for dish in current_user.curr_order.items() %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                {{ dish[0] }}
+                                <span class="badge badge-primary badge-pill">{{ dish[1] }}</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+    <button onclick="topFunction()" class="btn btn-amber " id="myBtn" style=" border-radius: 0" title="Go to top"><i style="font-size: 2em" class="fas fa-angle-up"></i></button>
     </div>
 {% endblock %}

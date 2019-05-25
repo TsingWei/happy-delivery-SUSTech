@@ -12,7 +12,15 @@ from flask_login import UserMixin, login_manager
 #     def get_id(self):
 #         return str(self.sid).encode("utf-8").decode("utf-8")
 class User(UserMixin):
-    pass
+    def __init__(self):
+        UserMixin.__init__(self)
+        self.curr_order = {
+            'aaa': 5,
+            u'红烧茄子': 1,
+            '馒头': 5,
+            'asdklo': 5
+        }
+
 
 
 # 用户记录表

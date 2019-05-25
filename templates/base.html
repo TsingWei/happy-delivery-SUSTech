@@ -54,6 +54,21 @@
             background-size: cover;
         }
 
+        #orders {
+            position: fixed; /* Fixed/sticky position */
+            top: 100px; /* Place the button at the bottom of the page */
+            left: 10px; /* Place the button 30px from the right */
+            z-index: 99; /* Make sure it does not overlap */
+            border: none; /* Remove borders */
+            outline: none; /* Remove outline */
+            {#background-color: #de8100; /* Set a background color */#}
+            {#color: white; /* Text color */#}
+            cursor: pointer; /* Add a mouse pointer on hover */
+            padding: 15px; /* Some padding */
+            {#border-radius: 10px; /* Rounded corners */#}
+            {#font-size: 18px; /* Increase font size */#}
+        }
+
         #myBtn {
             display: none; /* Hidden by default */
             position: fixed; /* Fixed/sticky position */
@@ -130,6 +145,7 @@
                 </ul>
                 <ul class="navbar-nav mr-4">
                     {% if current_user.is_authenticated %}
+
                     <li class="nav-item ">
                         <a class="nav-link" href="{{ url_for("hello_world") }}">{{ current_user.get_id() }}
                             <span class="sr-only">(current)</span>
