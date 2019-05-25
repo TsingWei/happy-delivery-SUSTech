@@ -1,11 +1,12 @@
 class Dish:
-    def __init__(self, _id, _name, _image_url, _price, _hallid, _description):
+    def __init__(self, _id, _name, _image_url, _price, _hallid, _description, _remain):
         self.id = _id
         self.name = _name
         self.image_url = _image_url
         self.price = _price
         self.hallID = _hallid
         self.description = _description
+        self.remain = _remain
 
 
 # dishes = [
