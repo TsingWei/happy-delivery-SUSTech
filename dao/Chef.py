@@ -70,13 +70,13 @@ class Chef(Base):
         session.close()
         if peter is None:
             return data
-        for i in peter:
+        for item in peter:
             dic = {
-                'chef_id': i.chef_id,
-                'chef_name': i.chef_name,
-                'chef_service_year': i.chef_service_year,
-                'chef_rank': i.chef_rank,
-                'hall_id': i.hall_id,
+                'chef_id': item.chef_id,
+                'chef_name': item.chef_name,
+                'chef_service_year': item.chef_service_year,
+                'chef_rank': item.chef_rank,
+                'hall_id': item.hall_id,
             }
             data.append(dic)
         return data
