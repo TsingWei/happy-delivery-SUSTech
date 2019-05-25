@@ -30,6 +30,7 @@ class Delivery(Base):
                 sql = 'select * from delivery where DELIVERY_ID=\'%s\';' % (id)
                 row=session.execute(sql)
                 for r in row:
+                    # print(r)
                     a={
                         'id':r[0],
                         'name':r[1],
@@ -265,5 +266,5 @@ if __name__ == '__main__':
     # result = Delivery.show_all_NC_order()
     # for  r in result:
     #     print(r)
-    Delivery. change_order_state_to_ED(11998)
+    print(Delivery.get_delivery_info(8))
     []
