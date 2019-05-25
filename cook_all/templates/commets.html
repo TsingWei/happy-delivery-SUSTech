@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    厨师界面
+{% endblock %}
+
+{% block navbar %}
+    {{ super() }}
+{% endblock %}
+
+{% block content %}
+    <div class="container" style="background-image: url(/static/img/lightbg.jpg)">
+        <div class="jumbotron" style="background: none">
+            <div class="container">
+
+                <h2 class="display-4"> {{ dish_name }}</h2>
+                <div class="row">
+
+                    {% for comment in comments %}
+                        <!-- Card -->
+                        <div class="card col-md-3">
+
+                            <!-- Card image -->
+                            {#                        <img class="card-img-top" src="{{ dish.image_url }}"#}
+                            {#                             alt="Card image cap">#}
+
+                            <!-- Card content -->
+                            <div class="card-body">
+
+                                <!-- Title -->
+                                <h4 class="card-title"><a>{{ comment.user }}<span
+                                        class="badge badge-primary badge-pill">{{ comment.rank }}</span></a></h4>
+
+                                <!-- Text -->
+                                <p class="card-text">{{ comment.content }}</p>
+                                <!-- Button -->
+
+
+                            </div>
+
+                        </div>
+                        <!-- Card -->
+                    {% endfor %}
+
+                </div>
+
+
+            </div>
+        </div>
+
+        <button onclick="topFunction()" class="btn btn-amber " id="myBtn" style=" border-radius: 0" title="Go to top"><i
+                style="font-size: 2em" class="fas fa-angle-up"></i></button>
+    </div>
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    欢乐送外送平台
+{% endblock %}
+
+{% block navbar %}
+    {{ super() }}
+{% endblock %}
+
+{% block content %}
+    <div class="container" style="background-image: url(/static/img/lightbg.jpg)">
+        <div class="jumbotron" style="background: none">
+            <div class="container">
+
+                <div class="row">
+                    <div class="col-sm">
+
+                    </div>
+                    <div class="col-sm">
+                        <form class="text-center border border-light p-5" action="{{ url_for('login') }}" method="POST">
+
+                            <p class="h4 mb-4">大厨登录</p>
+
+                            <!-- Usename -->
+                            <input type="text" id="username" class="form-control mb-4" name="username"
+                                   placeholder="Username">
+
+                            {#                            <!-- Password -->#}
+                            {#                            <input type="password" id="password" class="form-control mb-4" name="password"#}
+                            {#                                   placeholder="Password">#}
+
+                            <div class="d-flex justify-content-around">
+
+
+                            </div>
+
+                            <!-- Sign in button -->
+                            <button class="btn  btn-block my-4" name="submit" type="submit"
+                                    style="color: white;background-color: #de8100">登录
+                            </button>
+
+                            <!-- Register -->
+                            <p>
+                                {% with messages = get_flashed_messages() %}
+                                    {% for message in get_flashed_messages(with_categories=True) %}
+                                        <div class="alert alert-{{ message[0] }}" role="alert">
+                                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                            {{ message[1] }}
+                                        </div>
+                                    {% endfor %}
+                                {% endwith %}
+                            <a href="">注册</a>
+                            </p>
+
+
+                        </form>
+                        <!-- Default form login -->
+                    </div>
+                    <div class="col-sm">
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

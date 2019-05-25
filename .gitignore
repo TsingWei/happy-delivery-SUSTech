@@ -6,9 +6,11 @@ __pycache__/
 # C extensions
 *.so
 
+venv/
 # idea
 .idea/
 workspace.xml
+
 
 # Distribution / packaging
 .Python
