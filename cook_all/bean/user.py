@@ -1,5 +1,5 @@
 from flask_login import UserMixin
-from user_all.dao import User as DaoUser
+from cook_all.dao.Chef import Chef
 
 # class User:
 #     def __init__(self, sid, name, address):
@@ -14,17 +14,16 @@ from user_all.dao import User as DaoUser
 #         return str(self.sid).encode("utf-8").decode("utf-8")
 
 
-class User(UserMixin):
+class Cook(UserMixin):
     def __init__(self, dic=None):
         UserMixin.__init__(self)
         self.curr_order = {}
         if dic is not None:
-            self.user_id = dic['user_id']
-            self.user_name = dic['user_name']
-            self.user_gender = dic['user_gender']
-            self.user_sid = dic['user_sid']
-            self.user_phone = dic['user_phone']
-            self.user_type = dic['user_type']
+            self.chef_id = dic['chef_id']
+            self.chef_service_year = dic['chef_service_year']
+            self.chef_name = dic['chef_name']
+            self.chef_rank = dic['chef_rank']
+            self.hall_in = dic['hall_in']
 
 
 
@@ -36,6 +35,6 @@ users = [
 
 
 # 通过用户名，获取用户记录，如果不存在，则返回None
-def query_user(user_id):
-    return DaoUser.find_user(user_id=int(user_id))
+def query_user(chefid):
+    return Chef.find_chef(chef_id=int(chefid))
 

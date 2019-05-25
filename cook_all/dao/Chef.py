@@ -69,14 +69,14 @@ class Chef(Base):
         peter = session.query(Chef).filter(condition).all()
         session.close()
         if peter is None:
-            return data
-        for i in peter:
+            return None
+        for item in peter:
             dic = {
-                'chef_id': i.chef_id,
-                'chef_name': i.chef_name,
-                'chef_service_year': i.chef_service_year,
-                'chef_rank': i.chef_rank,
-                'hall_id': i.hall_id,
+                'chef_id': item.chef_id,
+                'chef_name': item.chef_name,
+                'chef_service_year': item.chef_service_year,
+                'chef_rank': item.chef_rank,
+                'hall_id': item.hall_id,
             }
             data.append(dic)
         return data
@@ -139,10 +139,203 @@ class Chef(Base):
         session.commit()
         session.close()
 
+    #===============================================================================================
+    #通过chefid 获得厨师的评论
+    @staticmethod
+    def get_dish_comment_from_chef_id(chefid):
+        if isinstance(chefid, int):
+            try:
+                session = DBSession()
+                sql='select CHEF_NAME,DISH_NAME,COMMENT_DETAILS,COMMENT_RANK from (select * from dish_comment join chef join dish on ' \
+                    'COMMENT_CHEFID=CHEF_ID and COMMENT_DISHID=DISH_ID  where COMMENT_CHEFID=\'%s\' order by DISH_NAME)a ' \
+                    'join (select DISH_ID from chef_to_dish where CHEF_ID=\'%s\')b on a.DISH_ID=b.DISH_ID;'%(chefid,chefid)
+                row = session.execute(sql)
+                k=[]
+                for r in row:
+                    a = {
+                        'chef_name':r[0],
+                        'dish_name': r[1],
+                        'comment_detail': r[2],
+                        'comment_rank': r[3]
+
+                    }
+                    k.append(a)
+                session.commit()
+                session.close()
+                return k
+
+            except:
+                print('查询失败')
+            pass
+        else:
+            print("please input correct chef id")
+
+    @staticmethod
+    #通过chefid 获得厨师的评分  \'%s\'
+    def get_chef_rank_from_chef_id(chefid):
+        if isinstance(chefid, int):
+            try:
+                session = DBSession()
+                sql='select CHEF_NAME,avg(COMMENT_RANK) from(select * from dish_comment join chef join dish on ' \
+                    'COMMENT_CHEFID=CHEF_ID and COMMENT_DISHID=DISH_ID  where COMMENT_CHEFID=\'%s\' order by DISH_NAME)a ' \
+                    'join (select DISH_ID from chef_to_dish where CHEF_ID=\'%s\')b on a.DISH_ID=b.DISH_ID ;'%(chefid,chefid)
+                row = session.execute(sql)
+                k=[]
+                for r in row:
+                    a={
+                        'chef_name':r[0],
+                        'rank':r[1]
+                    }
+                    k.append(a)
+                session.commit()
+                session.close()
+                return k
+
+            except:
+                print('查询失败')
+            pass
+        else:
+            print("please input correct chef id")
+
+    @staticmethod
+    #通过chefid 获得厨师的菜的评分  \'%s\'
+    def get_dish_rank_from_chef_id(chefid):
+        if isinstance(chefid, int):
+            try:
+                session = DBSession()
+                sql = 'select CHEF_NAME,DISH_NAME,b.DISH_ID,avg(COMMENT_RANK) from(select * from dish_comment join chef join dish on ' \
+                      'COMMENT_CHEFID=CHEF_ID and COMMENT_DISHID=DISH_ID  where COMMENT_CHEFID=\'%s\' order by DISH_NAME)a ' \
+                      'join (select DISH_ID from chef_to_dish where CHEF_ID=\'%s\')b on a.DISH_ID=b.DISH_ID group by DISH_NAME ;' % (
+                      chefid, chefid)
+                row = session.execute(sql)
+                k=[]
+                for r in row:
+                    a = {
+                        'chef_name': r[0],
+                        'dish_name': r[1],
+                        'dish_id': r[2],
+                        'rank': r[3]
+                    }
+                    k.append(a)
+
+                session.commit()
+                session.close()
+                return k
+
+            except:
+                print('查询失败')
+            pass
+        else:
+            print("please input correct chef id")
+
+    @staticmethod
+    #通过CHEFid设置厨师所属食堂
+    def set_chef_hall_by_chef_id(chefid,hallid):
+        if isinstance(chefid, int) and isinstance(hallid, int):
+            session = DBSession()
+            sql0='select HALL_ID from hall'
+            row = session.execute(sql0)
+            hall=[]
+            for r in row:
+               hall.append(r[0])
+            pd=0
+            for i in hall:
+                if (hallid==i):
+                    pd=1
+            if (pd==0):
+                print("你想上天？")
+
+            try:
+                sql = 'update chef set HALL_ID=\'%s\' WHERE CHEF_ID=\'%s\';' % (hallid, chefid)
+                session.execute(sql)
+                session.commit()
+            except:
+                session.rollback()
+                print('查询失败')
+                return [-999]
+            session.commit()
+            session.close()
+            pass
+        else:
+            print("please input correct chef id")
+
+    @staticmethod
+    #通过DISHID 设置菜品价格
+    def set_dish_price_by_dish_id(dishid,price):
+        if isinstance(dishid, int)and isinstance(price, int):
+            try:
+                session = DBSession()
+                sql = 'update dish set DISH_PRICE=\'%s\' WHERE DISH_ID=\'%s\';' % (price, dishid)
+                session.execute(sql)
+                session.commit()
+                session.close()
+            except:
+                print('查询失败')
+
+            pass
+        else:
+            print("please input correct chef id")
+    @staticmethod
+    #通过DISHID 设置菜品描述
+    def set_dish_description_by_dish_id(dishid,description):
+        if isinstance(dishid, int) and isinstance(description,str):
+            try:
+                session = DBSession()
+                sql = 'update dish set DISH_DESCRIPTION=\'%s\' WHERE DISH_ID=\'%s\';' % (description, dishid)
+                session.execute(sql)
+                session.commit()
+            except:
+                print('查询失败')
+            pass
+        else:
+            print("please input correct dishid,description")
+
+    @staticmethod
+    #通过chefid ,dishid 为厨师添加菜品
+    def add_dish_from_chef_id(chefid,dishid):
+        if isinstance(dishid, int) and isinstance(dishid, int):
+            sql = 'insert into chef_to_dish  (CHEF_ID,DISH_ID,REMAIN,`RANK`)VALUES(\'%s\',\'%s\',0,0);' % (chefid, dishid)
+            try:
+                session = DBSession()
+                # 执行sql语句
+                session.execute(sql)
+                # 提交到数据库执行
+                session.commit()
+                session.close()
+            except:
+                # Rollback in case there is any error
+                print('插入失败')
+            pass
+        else:
+            print("please input correct chefid, dishid")
+
+    @staticmethod
+    #通过chefid ,dishid 为厨师删除菜品
+    def delete_dish_from_chef_id(chefid,dishid):
+        if isinstance(dishid, int) and isinstance(dishid, int):
+            sql = 'delete from chef_to_dish where CHEF_ID=\'%s\' AND DISH_ID=\'%s\';' % (chefid, dishid)
+            session = DBSession()
+            try:
+                # 执行sql语句
+                session.execute(sql)
+                # 提交到数据库执行
+                session.commit()
+                return [1]
+            except:
+                # Rollback in case there is any error
+                session.rollback()
+                print('插入失败')
+                return [0]
+            session.close()
+        else:
+            print("please input correct chefid, dishid")
+
 
 if __name__ == '__main__':
-    Chef.new_chef('新厨师', 5)
-    for i in Chef.find_chef(chef_name='新厨师'):
-        Chef.modify_chef(i['chef_id'], chef_service_year=5, hall_id=3)
-    print(Chef.find_chef(chef_name='新厨师'))
-    Chef.del_chef(chef_name='新厨师')
+    # Chef.new_chef('新厨师', 5)
+    # for i in Chef.find_chef(chef_name='新厨师'):
+    #     Chef.modify_chef(i['chef_id'], chef_service_year=5, hall_id=3)
+    # print(Chef.find_chef(chef_name='新厨师'))
+    # Chef.del_chef(chef_name='新厨师')
+    k='asdadasd'
+    Chef.delete_dish_from_chef_id(4,5)
