@@ -100,6 +100,6 @@ class Hall(Base):
 
 
 if __name__ == '__main__':
-    for i in Hall.get_dishes(3):
+    for i in Hall.get_dishes(2):
         print(i)
     # print(Hall.get_chef_id(5, 1))

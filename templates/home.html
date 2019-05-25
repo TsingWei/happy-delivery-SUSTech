@@ -13,7 +13,20 @@
         <div class="jumbotron" style="background: none">
             <div class="container">
 
-                <h2 class="display-4"> LOGO</h2>
+                <p class="display-6"> 选择食堂:
+                <!-- Default unchecked -->
+                <form  href="{{ url_for('hello_world') }}" method="GET">
+                <select name="hall" class="browser-default custom-select col-md-4">
+                    <option value="">选一个食堂</option>
+                    <option value="1" selected>荔园1楼</option>
+                    <option value="2">荔园2楼</option>
+                    <option value="3">湖畔1楼</option>
+                    <option value="4">湖畔2楼</option>
+                    <option value="5">欣园</option>
+                </select>
+                <button type="submit" class="btn btn-amber">确定</button>
+                </form>
+                </p>
                 <div class="row">
 
                     {% for dish in dishes %}
