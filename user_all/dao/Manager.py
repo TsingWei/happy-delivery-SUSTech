@@ -361,6 +361,37 @@ class Manager(Base):
 
     @staticmethod
     # 通过managerid获得剩余量
+    def get_remain_from_manager_id_group(hallid):
+        if isinstance(hallid, int):
+            try:
+                session = DBSession()# where MANAGER_ID=\'%s\'
+                sql = 'select DISTINCT  HALL_NAME,DISH_NAME,REMAIN,dish.DISH_PRICE from (select HALL_NAME,CHEF_NAME,REMAIN,DISH_ID ' \
+                      'from (select HALL_NAME,CHEF_NAME,CHEF_ID from (select HALL_ID,HALL_NAME from manager JOIN hall on MANAGER_HALL_ID=HALL_ID and HALL_ID=\'%s\')a ' \
+                      'join (select CHEF_ID,CHEF_NAME,chef.HALL_ID AS HALL_ID from chef join hall on chef.HALL_ID=hall.HALL_ID )b on a.HALL_ID=b.HALL_ID )c' \
+                      ' join chef_to_dish on c.CHEF_ID=chef_to_dish.CHEF_ID)d join dish on dish.DISH_ID=d.DISH_ID group by(DISH_NAME,HALL_NAME);' % hallid
+                row = session.execute(sql)
+                k = []
+                for r in row:
+                    a = {
+                        'hall_name': r[0],
+                        'chef_name': r[1],
+                        'remain': r[2],
+                        'dish_price': r[3]
+
+                    }
+                    k.append(a)
+                session.commit()
+                session.close()
+                return k
+
+            except:
+                print('查询失败')
+            pass
+        else:
+            print("managerid啊")
+
+    @staticmethod
+    # 通过managerid获得剩余量
     def get_remain_from_manager_id(managerid):
         if isinstance(managerid, int):
             try:
@@ -456,9 +487,9 @@ class Manager(Base):
 
 if __name__ == '__main__':
 
-    result = Manager.set_chef_to_dish_by_remain(101)
-    # for i in result:
-    #     print(i)
+    result = Manager.get_remain_from_manager_id_group(4)
+    for i in result:
+        print(i)
 
     # print(d1)
 
