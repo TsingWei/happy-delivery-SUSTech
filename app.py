@@ -20,7 +20,7 @@ app.extensions['bootstrap']['cdns']['jquery'] = WebCDN(
 )
 
 app.secret_key = '11111111'  # CSRF密钥
-
+curr_order = {}
 
 # 测试页面
 @app.route('/test')
@@ -30,11 +30,16 @@ def test():
 @app.route('/', methods=['GET', 'POST'])
 @login_required
 def hello_world():  # 登陆后首页,点餐页面
+    global curr_order
     dishes = dish.dishes
     # form = myForm.OrderForm()
-    dishID = request.form.get('dishname')
+    dishID = request.args.get('dishname')
     print(dishID)
-    current_user.curr_order[dishID] = 1
+    if dishID in curr_order:
+        curr_order[dishID] += 1
+    else:
+        curr_order[dishID] = 1
+    current_user.curr_order = curr_order
     for eachKey in current_user.curr_order.keys():
         print(eachKey)
     return render_template('home.html', dishes=dishes)
