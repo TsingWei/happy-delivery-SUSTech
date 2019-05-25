@@ -3,10 +3,10 @@ from flask_bootstrap import Bootstrap
 from flask_bootstrap import WebCDN
 from flask_login import LoginManager, login_user, login_required,logout_user,current_user
 
-import bean.dish as dish
+# import bean.dish as dish
 from bean.user import User
 from bean.user import query_user
-from adapter import form as myForm
+from adapter import dishAdapter
 
 login_manager = LoginManager()
 app = Flask(__name__)
@@ -31,9 +31,15 @@ def test():
 @login_required
 def hello_world():  # 登陆后首页,点餐页面
     global curr_order
-    dishes = dish.dishes
+
     # form = myForm.OrderForm()
     dishID = request.form.get('dishname')
+    hallID = request.args.get('hall')
+    if hallID is None:
+        hallID = 1
+
+    print('hall ID is ', hallID)
+    dishes = dishAdapter.getAlldish(hallID)
     print(dishID)
     if dishID in curr_order:
         curr_order[dishID] += 1
