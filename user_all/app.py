@@ -4,9 +4,9 @@ from flask_bootstrap import WebCDN
 from flask_login import LoginManager, login_user, login_required,logout_user,current_user
 
 # import bean.dish as dish
-from bean.user import User
-from bean.user import query_user
-from adapter import dishAdapter
+from user_all.bean.user import User
+from user_all.bean.user import query_user
+from user_all.adapter import dishAdapter
 
 login_manager = LoginManager()
 app = Flask(__name__)

@@ -2,9 +2,9 @@ from sqlalchemy import Column, String, create_engine, Integer
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.sql import and_
-from dao.Chef import Chef
-from dao.ChefToDish import ChefToDish
-from dao.Dish import Dish
+from user_all.dao import Chef
+from user_all.dao import ChefToDish
+from user_all.dao import Dish
 
 Base = declarative_base()
 engine = create_engine('mysql+mysqlconnector://'

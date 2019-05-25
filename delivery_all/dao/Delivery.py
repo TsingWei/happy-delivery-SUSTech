@@ -3,8 +3,7 @@ import time
 from sqlalchemy import Column, String, create_engine, Integer
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.sql import and_
-from dao.Order import Order
+from user_all.dao import Order
 Base = declarative_base()
 engine = create_engine('mysql+mysqlconnector://'
                        'user_cs307:!2345678@129.204.93.30:3306/cs307')

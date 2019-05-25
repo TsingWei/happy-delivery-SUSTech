@@ -3,10 +3,9 @@ from flask_bootstrap import Bootstrap
 from flask_bootstrap import WebCDN
 from flask_login import LoginManager, login_user, login_required,logout_user,current_user
 
-import bean.dish as dish
-from bean.user import User
-from bean.user import query_user
-from adapter import form as myForm
+import user_all.bean.dish as dish
+from user_all.bean.user import User
+from user_all.bean.user import query_user
 import cook_all.bean.comment as comment
 
 login_manager = LoginManager()
