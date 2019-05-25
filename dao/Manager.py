@@ -394,7 +394,7 @@ class Manager(Base):
     @staticmethod
     #通过id和remain设置菜品剩余量
     def set_chef_to_dish_by_remain_id(remain,id):
-        if isinstance(remain, int)or isinstance(id, int):
+        if isinstance(remain, int)and  isinstance(id, int):
             sql='update chef_to_dish  set REMAIN= \'%s\' where ID = \'%s\';'%(remain,id)
             try:
                 session = DBSession()
