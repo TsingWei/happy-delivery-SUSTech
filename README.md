@@ -453,7 +453,7 @@ from ( -- 获取食堂拥有的厨师所做的菜的剩余量DISH_ID
 
 陈胤淇
 
-### PPT：[见附录一]([https://github.com/TsingWei/happy-delivery-SUSTech/blob/master/%E9%99%84%E5%BD%95/%E9%99%84%E5%BD%95%E4%B8%80.pdf](https://github.com/TsingWei/happy-delivery-SUSTech/blob/master/附录/附录一.pdf))
+### PPT：[见附录一](https://github.com/TsingWei/happy-delivery-SUSTech/blob/master/附录/附录一.pdf)
 
-### 视频演示 ：[见附录二]([https://github.com/TsingWei/happy-delivery-SUSTech/blob/master/%E9%99%84%E5%BD%95/%E9%99%84%E5%BD%95%E4%BA%8C.mp4](https://github.com/TsingWei/happy-delivery-SUSTech/blob/master/附录/附录二.mp4))
+### 视频演示 ：[见附录二](https://github.com/TsingWei/happy-delivery-SUSTech/blob/master/附录/附录二.mp4)
 
